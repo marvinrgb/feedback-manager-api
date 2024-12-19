@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model App {
+  id Int @id @default(autoincrement())
+  name String
+  url String
+  tickets Ticket[]
+}
+
+model Ticket {
+  id Int @id @default(autoincrement())
+  feedback_type String
+  app_id Int
+  app App @relation(references: [id], fields: [app_id])
+  description String
+  user_mail String
+  status_id Int
+  status Status @relation(references: [id], fields: [status_id])
+}
+
+model Status {
+  id Int @id @default(autoincrement())
+  text String
+  tickets Ticket[]
+}
